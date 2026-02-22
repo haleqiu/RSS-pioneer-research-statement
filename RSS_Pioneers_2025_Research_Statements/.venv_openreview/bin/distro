@@ -1,0 +1,6 @@
+#!/Users/pro/project/YuhengResearch/RSS-pioneer-research-statement/RSS_Pioneers_2025_Research_Statements/.venv_openreview/bin/python
+import sys
+from distro.distro import main
+if __name__ == '__main__':
+    sys.argv[0] = sys.argv[0].removesuffix('.exe')
+    sys.exit(main())

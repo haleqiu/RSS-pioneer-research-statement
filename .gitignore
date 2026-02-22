@@ -17,5 +17,6 @@
 *.snm
 *.vrb
 
-# Downloaded content
-RSS_Pioneers_2025_Research_Statements/
+# Downloaded content (keep download.py and README.md)
+RSS_Pioneers_2025_Research_Statements/*.pdf
+RSS_Pioneers_2025_Research_Statements/manifest.csv
