@@ -54,22 +54,22 @@ Figure~\ref{fig:overview} illustrates how these capabilities connect across the 
 
 \section{Past and Current Research}
 My research asks: how can robots learn metrics-aware uncertainty that transfers across sensors and platforms, and then use it to make state estimation robust, fuseable, and efficient?
-To answer this question, I first investigate how to learn visual covariance from features so that a visual odometry system can select correspondences and weight residuals according to predicted reliability.
-I then extend the same idea to inertial sensing, learning uncertainty propagation and observability-aware representations that generalize across unseen IMUs and trajectories.
-With calibrated uncertainties from both modalities verified to be metrics-aware, I design tuning-free visual-inertial initialization and calibration that fuse vision and inertial constraints robustly across changing environments and sensor configurations.
-Finally, I turn uncertainty into an efficiency signal for deployment by using it to guide quantization of visual odometry models and token merging for geometry transformers on edge hardware.
+To answer this question, I first learn visual covariance so visual odometry can reject unreliable correspondences and weight residuals by predicted reliability.
+Because visual evidence alone is fragile under high dynamics and sensor-specific inertial effects, I then extend uncertainty learning to inertial sensing through learned preintegration uncertainty and observability-aware inertial representations.
+With both modalities producing metrics-aware uncertainty, I next design tuning-free visual-inertial initialization and calibration that fuse constraints by calibrated reliability rather than hand-tuned rules.
+Once this calibrated uncertainty is trusted for estimation, I use the same signal as a deployment policy to guide quantization and token merging, so efficiency becomes a consequence of reliability-aware perception rather than a disconnected objective.
 
 \medskip
 \noindent\textbf{Metrics-Aware Covariance for Stereo Visual Odometry.}
 
-I developed a stereo visual odometry system~\cite{anonymous2025macvo} that learns metrics-aware covariance from visual features, replacing hand-tuned geometric noise models.
+I developed a stereo visual odometry system~\cite{anonymous2025macvo} that learns metrics-aware covariance from visual features, replacing hand-tuned geometric noise models as the first step of the uncertainty pipeline.
 We train the uncertainty model on a large-scale synthetic dataset~\cite{anonymous2020tartanair} so that the learned covariance captures metric scale, and the model demonstrates sim-to-real generalizability to unseen real cameras.
 The key idea is to predict 2D matching uncertainty from appearance, context, and occlusion cues, then lift it through stereo geometry into a full 3D covariance that includes inter-axis correlations.
 This covariance serves two roles: filtering unreliable correspondences and weighting residuals in pose optimization, enabling strong cross-camera generalization without manual tuning.
 
 \medskip
 \noindent\textbf{Data-Driven Inertial Odometry and Uncertainty Propagation.}
-IMU preintegration typically uses fixed white-noise parameters that fail to capture platform vibration, bias drift, and motion-dependent stochasticity.
+To address the remaining dynamics gap, I extend uncertainty learning to IMU preintegration, where fixed white-noise parameters fail to capture platform vibration, bias drift, and motion-dependent stochasticity.
 To address this, I developed a data-driven framework~\cite{anonymous2025airimu} that learns residual IMU correction and uncertainty propagation within a differentiable preintegration pipeline, preserving the classical kinematic structure while learning the parts that break under real hardware and dynamics.
 The learned uncertainty is verified to be metrics-aware, meaning the predicted covariance matches the empirical error distribution in metric units, which is essential for principled downstream fusion.
 Building on this uncertainty-aware preintegration, I developed an inertial odometry system~\cite{anonymous2025airio} that targets a complementary bottleneck: limited observability of attitude under agile motion.
